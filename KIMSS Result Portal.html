@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<!-- saved from url=(0027)https://100-015.oneapp.dev/ -->
-<html lang="en" data-qb-installed="true"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KIMSS Result Portal</title>
   <style>
@@ -9,6 +9,7 @@
       margin: 0;
       padding: 0;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      /* Using a placeholder URL for the school image */
       background: url("https://uploads.onecompiler.io/435rp6dgb/43u2nsed2/WhatsApp%20Image%202025-09-19%20at%202.29.40%20PM.jpeg") no-repeat center center fixed;
       background-size: cover;
       height: 100vh;
@@ -37,6 +38,7 @@
     }
 
     .login-container img {
+      /* Placeholder logo image */
       width: 90px;
       height: 90px;
       border-radius: 50%;
@@ -90,7 +92,7 @@
       display: block;
     }
 
-    .login-container select, .login-container input {
+    .login-container input {
       width: 100%;
       padding: 12px;
       margin: 10px 0;
@@ -115,8 +117,13 @@
       background: #1E6AC1;
     }
 
-    .login-btn:hover {
+    .login-btn:hover:enabled {
       transform: scale(1.05);
+    }
+
+    .login-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
     }
 
     .error {
@@ -124,479 +131,74 @@
       margin-top: 10px;
       font-size: 14px;
     }
+    
+    .csv-input-style {
+        width: 100%; 
+        padding: 8px; 
+        border-radius: 5px; 
+        border: 1px solid #ccc; 
+        box-sizing: border-box;
+    }
+
+    /* Result Display Styling */
+    #resultDisplay {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f9f9f9;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        text-align: left;
+        display: none;
+    }
+    #resultDisplay h3 {
+        color: #0B2E59;
+        margin-top: 0;
+        border-bottom: 2px solid #1E6AC1;
+        padding-bottom: 5px;
+    }
+    #resultDisplay p {
+        margin: 5px 0;
+        color: #333;
+        font-size: 15px;
+        font-weight: 500;
+    }
+    #resultDisplay span {
+        font-weight: 700;
+        color: #1E6AC1;
+    }
+    
+    .password-section {
+        background: #eef;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+        border: 1px solid #cce;
+    }
+    
+    /* Success/Error Messaging */
+    .message {
+        padding: 8px;
+        border-radius: 4px;
+        margin-top: 5px;
+        font-size: 13px;
+    }
+    .message.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .message.failure {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
 
     @media (max-width: 480px) {
       .login-container { padding: 20px 15px; }
-      .login-container select, .login-btn, .login-container input { font-size: 15px; padding: 12px; }
+      .login-container input, .login-btn { font-size: 15px; padding: 12px; }
     }
   </style>
-<style type="text/css">.lf-progress {
-  -webkit-appearance: none;
-  -moz-apperance: none;
-  width: 100%;
-  /* margin: 0 10px; */
-  height: 4px;
-  border-radius: 3px;
-  cursor: pointer;
-}
-.lf-progress:focus {
-  outline: none;
-  border: none;
-}
-.lf-progress::-moz-range-track {
-  cursor: pointer;
-  background: none;
-  border: none;
-  outline: none;
-}
-.lf-progress::-webkit-slider-thumb {
-  -webkit-appearance: none !important;
-  height: 13px;
-  width: 13px;
-  border: 0;
-  border-radius: 50%;
-  background: #0fccce;
-  cursor: pointer;
-}
-.lf-progress::-moz-range-thumb {
-  -moz-appearance: none !important;
-  height: 13px;
-  width: 13px;
-  border: 0;
-  border-radius: 50%;
-  background: #0fccce;
-  cursor: pointer;
-}
-.lf-progress::-ms-track {
-  width: 100%;
-  height: 3px;
-  cursor: pointer;
-  background: transparent;
-  border-color: transparent;
-  color: transparent;
-}
-.lf-progress::-ms-fill-lower {
-  background: #ccc;
-  border-radius: 3px;
-}
-.lf-progress::-ms-fill-upper {
-  background: #ccc;
-  border-radius: 3px;
-}
-.lf-progress::-ms-thumb {
-  border: 0;
-  height: 15px;
-  width: 15px;
-  border-radius: 50%;
-  background: #0fccce;
-  cursor: pointer;
-}
-.lf-progress:focus::-ms-fill-lower {
-  background: #ccc;
-}
-.lf-progress:focus::-ms-fill-upper {
-  background: #ccc;
-}
-.lf-player-container :focus {
-  outline: 0;
-}
-.lf-popover {
-  position: relative;
-}
-
-.lf-popover-content {
-  display: inline-block;
-  position: absolute;
-  opacity: 1;
-  visibility: visible;
-  transform: translate(0, -10px);
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  transition: all 0.3s cubic-bezier(0.75, -0.02, 0.2, 0.97);
-}
-
-.lf-popover-content.hidden {
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(0, 0px);
-}
-
-.lf-player-btn-container {
-  display: flex;
-  align-items: center;
-}
-.lf-player-btn {
-  cursor: pointer;
-  fill: #999;
-  width: 14px;
-}
-
-.lf-player-btn.active {
-  fill: #555;
-}
-
-.lf-popover {
-  position: relative;
-}
-
-.lf-popover-content {
-  display: inline-block;
-  position: absolute;
-  background-color: #ffffff;
-  opacity: 1;
-
-  transform: translate(0, -10px);
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  transition: all 0.3s cubic-bezier(0.75, -0.02, 0.2, 0.97);
-  padding: 10px;
-}
-
-.lf-popover-content.hidden {
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(0, 0px);
-}
-
-.lf-arrow {
-  position: absolute;
-  z-index: -1;
-  content: '';
-  bottom: -9px;
-  border-style: solid;
-  border-width: 10px 10px 0px 10px;
-}
-
-.lf-left-align,
-.lf-left-align .lfarrow {
-  left: 0;
-  right: unset;
-}
-
-.lf-right-align,
-.lf-right-align .lf-arrow {
-  right: 0;
-  left: unset;
-}
-
-.lf-text-input {
-  border: 1px #ccc solid;
-  border-radius: 5px;
-  padding: 3px;
-  width: 60px;
-  margin: 0;
-}
-
-.lf-color-picker {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 90px;
-}
-
-.lf-color-selectors {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.lf-color-component {
-  display: flex;
-  flex-direction: row;
-  font-size: 12px;
-  align-items: center;
-  justify-content: center;
-}
-
-.lf-color-component strong {
-  width: 40px;
-}
-
-.lf-color-component input[type='range'] {
-  margin: 0 0 0 10px;
-}
-
-.lf-color-component input[type='number'] {
-  width: 50px;
-  margin: 0 0 0 10px;
-}
-
-.lf-color-preview {
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 5px;
-}
-
-.lf-preview {
-  height: 60px;
-  width: 60px;
-}
-
-.lf-popover-snapshot {
-  width: 150px;
-}
-.lf-popover-snapshot h5 {
-  margin: 5px 0 10px 0;
-  font-size: 0.75rem;
-}
-.lf-popover-snapshot a {
-  display: block;
-  text-decoration: none;
-}
-.lf-popover-snapshot a:before {
-  content: '⥼';
-  margin-right: 5px;
-}
-.lf-popover-snapshot .lf-note {
-  display: block;
-  margin-top: 10px;
-  color: #999;
-}
-.lf-player-controls > div {
-  margin-right: 5px;
-  margin-left: 5px;
-}
-.lf-player-controls > div:first-child {
-  margin-left: 0px;
-}
-.lf-player-controls > div:last-child {
-  margin-right: 0px;
-}
-</style><style type="text/css">.lf-progress {
-  -webkit-appearance: none;
-  -moz-apperance: none;
-  width: 100%;
-  /* margin: 0 10px; */
-  height: 4px;
-  border-radius: 3px;
-  cursor: pointer;
-}
-.lf-progress:focus {
-  outline: none;
-  border: none;
-}
-.lf-progress::-moz-range-track {
-  cursor: pointer;
-  background: none;
-  border: none;
-  outline: none;
-}
-.lf-progress::-webkit-slider-thumb {
-  -webkit-appearance: none !important;
-  height: 13px;
-  width: 13px;
-  border: 0;
-  border-radius: 50%;
-  background: #0fccce;
-  cursor: pointer;
-}
-.lf-progress::-moz-range-thumb {
-  -moz-appearance: none !important;
-  height: 13px;
-  width: 13px;
-  border: 0;
-  border-radius: 50%;
-  background: #0fccce;
-  cursor: pointer;
-}
-.lf-progress::-ms-track {
-  width: 100%;
-  height: 3px;
-  cursor: pointer;
-  background: transparent;
-  border-color: transparent;
-  color: transparent;
-}
-.lf-progress::-ms-fill-lower {
-  background: #ccc;
-  border-radius: 3px;
-}
-.lf-progress::-ms-fill-upper {
-  background: #ccc;
-  border-radius: 3px;
-}
-.lf-progress::-ms-thumb {
-  border: 0;
-  height: 15px;
-  width: 15px;
-  border-radius: 50%;
-  background: #0fccce;
-  cursor: pointer;
-}
-.lf-progress:focus::-ms-fill-lower {
-  background: #ccc;
-}
-.lf-progress:focus::-ms-fill-upper {
-  background: #ccc;
-}
-.lf-player-container :focus {
-  outline: 0;
-}
-.lf-popover {
-  position: relative;
-}
-
-.lf-popover-content {
-  display: inline-block;
-  position: absolute;
-  opacity: 1;
-  visibility: visible;
-  transform: translate(0, -10px);
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  transition: all 0.3s cubic-bezier(0.75, -0.02, 0.2, 0.97);
-}
-
-.lf-popover-content.hidden {
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(0, 0px);
-}
-
-.lf-player-btn-container {
-  display: flex;
-  align-items: center;
-}
-.lf-player-btn {
-  cursor: pointer;
-  fill: #999;
-  width: 14px;
-}
-
-.lf-player-btn.active {
-  fill: #555;
-}
-
-.lf-popover {
-  position: relative;
-}
-
-.lf-popover-content {
-  display: inline-block;
-  position: absolute;
-  background-color: #ffffff;
-  opacity: 1;
-
-  transform: translate(0, -10px);
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  transition: all 0.3s cubic-bezier(0.75, -0.02, 0.2, 0.97);
-  padding: 10px;
-}
-
-.lf-popover-content.hidden {
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(0, 0px);
-}
-
-.lf-arrow {
-  position: absolute;
-  z-index: -1;
-  content: '';
-  bottom: -9px;
-  border-style: solid;
-  border-width: 10px 10px 0px 10px;
-}
-
-.lf-left-align,
-.lf-left-align .lfarrow {
-  left: 0;
-  right: unset;
-}
-
-.lf-right-align,
-.lf-right-align .lf-arrow {
-  right: 0;
-  left: unset;
-}
-
-.lf-text-input {
-  border: 1px #ccc solid;
-  border-radius: 5px;
-  padding: 3px;
-  width: 60px;
-  margin: 0;
-}
-
-.lf-color-picker {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 90px;
-}
-
-.lf-color-selectors {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.lf-color-component {
-  display: flex;
-  flex-direction: row;
-  font-size: 12px;
-  align-items: center;
-  justify-content: center;
-}
-
-.lf-color-component strong {
-  width: 40px;
-}
-
-.lf-color-component input[type='range'] {
-  margin: 0 0 0 10px;
-}
-
-.lf-color-component input[type='number'] {
-  width: 50px;
-  margin: 0 0 0 10px;
-}
-
-.lf-color-preview {
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 5px;
-}
-
-.lf-preview {
-  height: 60px;
-  width: 60px;
-}
-
-.lf-popover-snapshot {
-  width: 150px;
-}
-.lf-popover-snapshot h5 {
-  margin: 5px 0 10px 0;
-  font-size: 0.75rem;
-}
-.lf-popover-snapshot a {
-  display: block;
-  text-decoration: none;
-}
-.lf-popover-snapshot a:before {
-  content: '⥼';
-  margin-right: 5px;
-}
-.lf-popover-snapshot .lf-note {
-  display: block;
-  margin-top: 10px;
-  color: #999;
-}
-.lf-player-controls > div {
-  margin-right: 5px;
-  margin-left: 5px;
-}
-.lf-player-controls > div:first-child {
-  margin-left: 0px;
-}
-.lf-player-controls > div:last-child {
-  margin-right: 0px;
-}
-</style></head>
+</head>
 <body>
   <div class="login-container" id="loginPage">
     <img src="./KIMSS Result Portal_files/WhatsApp Image 2025-07-09 at 3.16.24 PM.jpeg" alt="Logo">
@@ -605,44 +207,64 @@
 
     <div class="login-type-selector">
       <button type="button" class="login-type-btn active" data-type="student">Student</button>
-      <button type="button" class="login-type-btn" data-type="teacher">Teacher/Staff</button>
+      <button type="button" class="login-type-btn" data-type="admin">Admin User</button>
     </div>
 
-    <!-- Student Options -->
     <form id="studentLoginForm" class="login-form active">
-      <select id="studentSection">
-        <option value="">-- Select Grade/Section --</option>
-        <option value="6blue">6th Blue</option>
-        <option value="6green">6th Green</option>
-        <option value="6red">6th Red</option>
-        <option value="7blue">7th Blue</option>
-        <option value="7green">7th Green</option>
-        <option value="7red">7th Red</option>
-      </select>
+      <input type="text" id="studentID" placeholder="Enter Your Student ID" required>
       <button type="submit" class="login-btn">View Result</button>
+      <p class="error" id="studentErrorMsg" style="display: none;"></p>
+      
+      <div id="resultDisplay" style="display: none;">
+        <h3>Your Examination Result</h3>
+        <p>Student ID: <span id="displayStudentID"></span></p>
+        <p>Name: <span id="displayName"></span></p>
+        <p>Total Marks: <span id="displayTotalMarks"></span></p>
+        <p>Obtained Marks: <span id="displayObtainedMarks"></span></p>
+        <p>Percentage: <span id="displayPercentage"></span></p>
+        <p>Position: <span id="displayPosition"></span></p>
+      </div>
     </form>
 
-    <!-- Teacher/Staff Login -->
-    <form id="teacherLoginForm" class="login-form">
-      <input type="text" id="teacherUsername" placeholder="Username" required="">
-      <input type="password" id="teacherPassword" placeholder="Password" required="">
+    <form id="adminLoginForm" class="login-form">
+      <input type="text" id="adminUsername" placeholder="Username" required="">
+      <input type="password" id="adminPassword" placeholder="Password" required="">
       
-      <!-- Dropdown initially hidden -->
-      <select id="teacherSection" style="display:none;">
-        <option value="">-- Select Result --</option>
-        <option value="6blue">Overall Class Result of 6th Blue</option>
-        <option value="6green">Overall Class Result of 6th Green</option>
-        <option value="6red">Overall Class Result of 6th Red</option>
-        <option value="7blue">Overall Class Result of 7th Blue</option>
-        <option value="7green">Overall Class Result of 7th Green</option>
-        <option value="7red">Overall Class Result of 7th Red</option>
-      </select>
+      <div id="csvUploadSection" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; display: none; text-align: left;">
+          <h3 style="color: #0B2E59; margin-bottom: 10px; font-size: 16px;">Admin Settings Panel</h3>
+          
+          <h4 style="color: #0B2E59; margin-bottom: 5px; font-size: 14px;">1. Update Results Data</h4>
+          <label for="csvFileInput" style="display: block; margin-bottom: 5px; font-size: 14px; color: #555;">Upload New Results (CSV File):</label>
+          <input type="file" id="csvFileInput" accept=".csv" class="csv-input-style">
+          <div class="message" id="csvUploadMsg" style="display: none;"></div>
+          <p style="font-size: 12px; color: #888; margin-top: 5px;">Required headers: <strong>Student ID</strong>, <strong>Student Name</strong>, <strong>Total Marks</strong>, <strong>Marks Obtained</strong>, <strong>Percentage</strong>, <strong>Position</strong>.</p>
+          <hr style="border: 0; border-top: 1px solid #ccc; margin: 15px 0;">
+          
+          <div class="password-section">
+              <h4 style="color: #0B2E59; margin-bottom: 10px; font-size: 14px;">2. Change Admin Password (Session Only)</h4>
+              <input type="password" id="newAdminPassword" placeholder="Enter New Password">
+              <input type="password" id="confirmAdminPassword" placeholder="Confirm New Password">
+              <button type="button" id="changePasswordBtn" class="login-btn" style="margin-top: 10px; padding: 10px;">Update Password</button>
+              <div class="message" id="passwordChangeMsg" style="display: none;"></div>
+              <p style="font-size: 11px; color: #d9534f; margin-top: 10px;">WARNING: Password change is NOT permanent. It resets on page refresh.</p>
+          </div>
+      </div>
+      
       <button type="submit" class="login-btn">Login</button>
       <p class="error" id="errorMsg"></p>
     </form>
   </div>
 
   <script>
+    // --- ADMIN CREDENTIALS (Default and session-mutable) ---
+    let adminUsername = "admin";
+    let adminPassword = "admin"; // Default password
+    
+    // GLOBAL RESULT DATA
+    var studentResults = {}; 
+    window.studentResults = studentResults;
+
+    // --- UTILITY FUNCTIONS ---
     const loginTypeBtns = document.querySelectorAll('.login-type-btn');
     const loginForms = document.querySelectorAll('.login-form');
     loginTypeBtns.forEach(btn => {
@@ -652,69 +274,225 @@
         const type = btn.getAttribute('data-type');
         loginForms.forEach(form => {
           form.classList.remove('active');
-          if(form.id === type + 'LoginForm') form.classList.add('active');
+          // Use 'admin' to match the data-type for the admin form
+          if(form.id === type + 'LoginForm' || (type === 'admin' && form.id === 'adminLoginForm')) form.classList.add('active');
         });
         document.getElementById('errorMsg').textContent = '';
+        document.getElementById('resultDisplay').style.display = 'none';
       });
     });
-
-    // STUDENT RESULT LINKS
-    const studentLinks = {
-      "6blue": "https://100-001.oneapp.dev/",
-      "6green": "https://100-002.oneapp.dev/",
-      "6red": "https://100-003.oneapp.dev/",
-      "7blue": "https://100-007.oneapp.dev/",
-      "7green": "https://100-008.oneapp.dev/",
-      "7red": "https://100-009.oneapp.dev/"
-    };
-
-    document.getElementById("studentLoginForm").addEventListener("submit", function(e){
-      e.preventDefault();
-      const val = document.getElementById("studentSection").value;
-      if(studentLinks[val]) window.open(studentLinks[val], "_blank");
-      else alert("Please select a grade/section.");
+    
+    // --- PASSWORD CHANGE LOGIC (FIXED) ---
+    document.getElementById('changePasswordBtn').addEventListener('click', () => {
+        const newPass = document.getElementById('newAdminPassword').value.trim();
+        const confirmPass = document.getElementById('confirmAdminPassword').value.trim();
+        const msg = document.getElementById('passwordChangeMsg');
+        
+        msg.style.display = 'block';
+        msg.classList.remove('success', 'failure');
+        
+        if (newPass.length < 4) {
+            msg.classList.add('failure');
+            msg.textContent = "❌ Password must be at least 4 characters long.";
+            return;
+        }
+        
+        if (newPass !== confirmPass) {
+            msg.classList.add('failure');
+            msg.textContent = "❌ Passwords do not match.";
+            return;
+        }
+        
+        // Success: Update the session variable
+        adminPassword = newPass;
+        document.getElementById('newAdminPassword').value = '';
+        document.getElementById('confirmAdminPassword').value = '';
+        
+        msg.classList.add('success');
+        msg.textContent = "✅ Password successfully updated for this session! (New Password: " + newPass + ")";
     });
 
-    // TEACHER/STAFF LOGIN LINKS
-    const teacherLinks = {
-      "6blue": "https://100-004.oneapp.dev/",
-      "6green": "https://100-005.oneapp.dev/",
-      "6red": "https://100-006.oneapp.dev/",
-      "7blue": "https://100-010.oneapp.dev/",
-      "7green": "https://100-011.oneapp.dev/",
-      "7red": "https://100-012.oneapp.dev/"
-    };
+    // --- CSV UPLOAD LOGIC (FIXED FOR FLEXIBLE COLUMN NAMES) ---
+    function processCSVFile(file) {
+      const reader = new FileReader();
+      const csvMsg = document.getElementById('csvUploadMsg');
+      csvMsg.style.display = 'none';
+      csvMsg.classList.remove('success', 'failure');
+      
+      reader.onload = function(e) {
+        const csvText = e.target.result;
+        const lines = csvText.split('\n').filter(line => line.trim() !== '');
 
-    document.getElementById("teacherLoginForm").addEventListener("submit", function(e){
-      e.preventDefault();
-      const username = document.getElementById("teacherUsername").value.trim();
-      const password = document.getElementById("teacherPassword").value.trim();
-      const sectionDropdown = document.getElementById("teacherSection");
+        if (lines.length <= 1) { 
+          csvMsg.classList.add('failure');
+          csvMsg.textContent = "❌ The CSV file is empty or contains only headers.";
+          csvMsg.style.display = 'block';
+          return;
+        }
 
-      if(username === "KIMSS NSR" && password === "KIMSS NSR") {
-        // Show dropdown and change button to "Open Result"
-        sectionDropdown.style.display = "block";
-        this.querySelector(".login-btn").textContent = "Open Result";
+        let newResults = {};
+        
+        // 1. Get and normalize headers from the first line (Removes spaces, quotes, and dots)
+        let headers = lines[0].split(',').map(header => 
+            header.trim().replace(/"/g, '').toLowerCase().replace(/ /g, '').replace(/\./g, '')
+        );
+        
+        // 2. Define the expected keys and map them to the column index
+        const keyMap = {
+            'studentid': -1,
+            'studentname': -1,
+            'totalmarks': -1,
+            'obtmarks': -1, // Target for Marks Obtained
+            'obtpercentage': -1, // Target for Percentage
+            'position': -1
+        };
 
-        // Remove old click events
-        this.querySelector(".login-btn").onclick = null;
+        // Find the index of each required column dynamically using flexible search terms
+        headers.forEach((header, index) => {
+            // General info
+            if (header.includes('studentid')) keyMap.studentid = index;
+            if (header.includes('studentname')) keyMap.studentname = index;
+            if (header.includes('totalmark')) keyMap.totalmarks = index; 
 
-        // Add new click to open selected result
-        this.querySelector(".login-btn").addEventListener("click", () => {
-          const selected = sectionDropdown.value;
-          if(selected && teacherLinks[selected]) window.open(teacherLinks[selected], "_blank");
-          else alert("Please select a result.");
+            // FIX 1: Flexible search for OBTMARKS. Your normalized header is "marksobtained".
+            if (header.includes('marksobtained') || header.includes('obtainedmarks') || header.includes('obtmark') || header.includes('score') || header.includes('achieved')) {
+                keyMap.obtmarks = index;
+            }
+
+            // FIX 2: Flexible search for OBTPERCENTAGE. Your normalized header is "percentage".
+            if (header.includes('percentage') || header.includes('percent') || header.includes('obtpercent') || header.includes('finalpercent')) {
+                keyMap.obtpercentage = index;
+            }
+            
+            // Position/Rank
+            if (header.includes('position') || header.includes('rank')) keyMap.position = index;
         });
 
-        // Clear any error message
-        document.getElementById('errorMsg').textContent = '';
+        // 3. Validation Check: Ensure all required columns were found
+        const missingKeys = Object.keys(keyMap).filter(key => keyMap[key] === -1);
+        if (missingKeys.length > 0) {
+            csvMsg.classList.add('failure');
+            csvMsg.textContent = `❌ CSV format error: Missing headers for: ${missingKeys.map(k => k.toUpperCase())}. Please correct your CSV header row.`;
+            csvMsg.style.display = 'block';
+            return;
+        }
+
+        // 4. Process data rows using the determined indices
+        for (let i = 1; i < lines.length; i++) {
+            const values = lines[i].split(',').map(value => value.trim().replace(/"/g, ''));
+            
+            if (values.length > keyMap.studentid && values[keyMap.studentid]) {
+                const studentId = values[keyMap.studentid].toUpperCase(); 
+                
+                newResults[studentId] = {
+                    name: values[keyMap.studentname] || 'N/A',
+                    totalMarks: values[keyMap.totalmarks] || 'N/A',
+                    obtainedMarks: values[keyMap.obtmarks] || 'N/A',
+                    percentage: values[keyMap.obtpercentage] || 'N/A',
+                    position: values[keyMap.position] || 'N/A'
+                };
+            }
+        }
+        
+        if (Object.keys(newResults).length === 0) {
+            csvMsg.classList.add('failure');
+            csvMsg.textContent = "❌ CSV format error: Zero student data rows found after headers. Please check for blank lines or non-standard characters.";
+            csvMsg.style.display = 'block';
+            return;
+        }
+
+        // Success Notification
+        window.studentResults = newResults; 
+        csvMsg.classList.add('success');
+        csvMsg.textContent = `✅ Success! Loaded ${Object.keys(newResults).length} student results mapped by ID.`;
+        csvMsg.style.display = 'block';
+      };
+
+      reader.readAsText(file);
+    }
+
+    // Event listener for CSV file input
+    document.addEventListener('DOMContentLoaded', () => {
+      const fileInput = document.getElementById('csvFileInput');
+      if (fileInput) {
+        // Use 'change' event to trigger immediately after file selection
+        fileInput.addEventListener('change', (event) => {
+          const file = event.target.files[0];
+          if (file) {
+            processCSVFile(file);
+          }
+        });
+      }
+    });
+
+
+    // --- STUDENT LOOKUP LOGIC ---
+    document.getElementById("studentLoginForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const studentIDInput = document.getElementById("studentID");
+      const errorMsg = document.getElementById('studentErrorMsg');
+      const display = document.getElementById('resultDisplay');
+      
+      errorMsg.style.display = 'none';
+      display.style.display = 'none';
+
+      const studentID = studentIDInput.value.trim().toUpperCase(); 
+      
+      if (!studentID) {
+          errorMsg.textContent = "Please enter your Student ID.";
+          errorMsg.style.display = 'block';
+          return;
+      }
+      
+      const result = window.studentResults[studentID];
+      
+      if(result) {
+          // Found result - populate and show display
+          document.getElementById('displayStudentID').textContent = studentID;
+          document.getElementById('displayName').textContent = result.name;
+          document.getElementById('displayTotalMarks').textContent = result.totalMarks;
+          document.getElementById('displayObtainedMarks').textContent = result.obtainedMarks;
+          document.getElementById('displayPercentage').textContent = result.percentage;
+          document.getElementById('displayPosition').textContent = result.position;
+          
+          display.style.display = 'block';
+
       } else {
-        document.getElementById("errorMsg").textContent = "Invalid teacher/staff username or password!";
-        sectionDropdown.style.display = "none";
-        this.querySelector(".login-btn").textContent = "Login";
+          // Not found
+          errorMsg.textContent = "Student ID '" + studentID + "' not found, or results have not been uploaded yet.";
+          errorMsg.style.display = 'block';
+      }
+    });
+
+    // --- ADMIN USER LOGIN LOGIC ---
+    document.getElementById("adminLoginForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const form = this;
+      const username = document.getElementById("adminUsername").value.trim();
+      const password = document.getElementById("adminPassword").value.trim();
+      const csvUploadSection = document.getElementById("csvUploadSection");
+      const loginButton = form.querySelector(".login-btn");
+      const errorMsg = document.getElementById('errorMsg');
+
+      // Check against current session credentials (admin/admin by default)
+      if(username === adminUsername && password === adminPassword) {
+        
+        csvUploadSection.style.display = "block"; 
+        loginButton.textContent = "Logged In";
+        loginButton.disabled = true;
+        errorMsg.textContent = '';
+        
+        // Clear previous messages on successful login
+        document.getElementById('passwordChangeMsg').style.display = 'none';
+        document.getElementById('csvUploadMsg').style.display = 'none';
+
+      } else {
+        errorMsg.textContent = "❌ Invalid Admin username or password!";
+        csvUploadSection.style.display = "none";
+        loginButton.textContent = "Login";
+        loginButton.disabled = false;
       }
     });
   </script>
-
-
-</body></html>
+</body>
+</html>
